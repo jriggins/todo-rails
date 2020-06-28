@@ -26,6 +26,20 @@ RSpec.describe Todos::CreateController, type: :request do
       end
     end
 
-    context 'when invalid input is provided'
+    context 'when invalid input is provided' do
+      context 'when title is blank' do
+        it 'returns a bad request' do
+          params = {
+            todos: {
+              description: 'Need to complete this feature now!',
+            }
+          }
+
+          post('/todos', params: params, as: :json)
+
+          expect(response.status).to eq(400)
+        end
+      end
+    end
   end
 end

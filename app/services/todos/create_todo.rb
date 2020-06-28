@@ -11,6 +11,8 @@ module Todos
     def call(input:)
       todo = @repository.create!(uuid: @uuid_factory.call, title: input.title, description: input.description)
       Success(CreateTodoResponse.new(uuid: todo.uuid))
+    rescue StandardError => e
+      Failure(e)
     end
   end
 end

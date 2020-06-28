@@ -1,9 +1,14 @@
 module Todos
+  # TODO: Rename CreateTodoController
   class CreateController < ApplicationController
     def create
       create_todo(create_params).fmap do |output|
         respond_to do |format|
           format.json { render status: :no_content, location: "/todos/#{output.uuid}" }
+        end
+      end.or do |error|
+        respond_to do |format|
+          format.json { render status: :bad_request }
         end
       end
     end
