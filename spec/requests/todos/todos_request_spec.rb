@@ -11,6 +11,9 @@ RSpec.describe Todos::TodosController, type: :request do
         post('/todos', params: params, as: :json)
 
         expect(response.status).to eq(200)
+        expect(Todos::Todo.count).to eq(1)
+        expect(Todos::Todo.last.title).to eq('Complete this feature')
+        expect(Todos::Todo.last.description).to eq('Need to complete this feature now!')
       end
     end
 
