@@ -17,8 +17,7 @@ module Todos
     end
 
     def create_todo(params)
-      CreateTodo
-        .new(repository: Todo, uuid_factory: ->() { 'ee035c26-22da-4a2f-9204-78b2ab81232d' }) # TODO: Fix
+      Container['create_todo']
         .call(input: CreateTodoInput.from_hash(hash: params))
     end
   end
