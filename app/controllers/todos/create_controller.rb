@@ -1,10 +1,10 @@
 module Todos
   class CreateController < ApplicationController
     def create
-      todo = create_todo(create_params)
+      output = create_todo(create_params)
 
       respond_to do |format|
-        format.json { render status: :no_content, location: "/todos/#{todo.id}" }
+        format.json { render status: :no_content, location: "/todos/#{output.uuid}" }
       end
     end
 

@@ -9,7 +9,6 @@ module Todos
 
     @@registry['uuid_factory'] = ->() { SecureRandom.uuid }
 
-    @@registry['create_todo'] =
-      CreateTodo.new(repository: Todo, uuid_factory: self['uuid_factory'])
+    @@registry['create_todo'] = CreateTodo.new(repository: Todo, uuid_factory: self['uuid_factory'])
   end
 end
