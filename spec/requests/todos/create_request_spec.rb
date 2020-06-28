@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Todos::TodosController, type: :request do
+RSpec.describe Todos::CreateController, type: :request do
   describe 'POST /todos' do
     context 'when valid input is provided' do
       it 'creates a Todo' do

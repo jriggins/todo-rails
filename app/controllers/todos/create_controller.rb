@@ -1,5 +1,5 @@
 module Todos
-  class TodosController < ApplicationController
+  class CreateController < ApplicationController
     def create
       Todo.create!(create_params)
 
