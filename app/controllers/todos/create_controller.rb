@@ -1,10 +1,10 @@
 module Todos
   class CreateController < ApplicationController
     def create
-      output = create_todo(create_params)
-
-      respond_to do |format|
-        format.json { render status: :no_content, location: "/todos/#{output.uuid}" }
+      create_todo(create_params).fmap do |output|
+        respond_to do |format|
+          format.json { render status: :no_content, location: "/todos/#{output.uuid}" }
+        end
       end
     end
 
@@ -17,7 +17,8 @@ module Todos
     end
 
     def create_todo(params)
-      Container['create_todo']
+      CreateTodo
+        .new(repository: Todo, uuid_factory: Utils::GenerateUuid.new)
         .call(input: CreateTodoInput.from_hash(hash: params))
     end
   end
