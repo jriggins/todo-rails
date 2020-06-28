@@ -13,10 +13,12 @@
 ActiveRecord::Schema.define(version: 2020_06_28_184611) do
 
   create_table "todos_todos", force: :cascade do |t|
-    t.string "title"
+    t.string "uuid", null: false
+    t.string "title", null: false
     t.string "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["uuid"], name: "index_todos_todos_on_uuid", unique: true
   end
 
 end
