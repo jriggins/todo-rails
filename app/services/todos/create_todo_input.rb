@@ -2,12 +2,19 @@
 
 module Todos
   class CreateTodoInput
+    include ActiveModel::Validations
     attr_reader :title, :description
+
+    validates_presence_of :title
 
     def initialize(title:, description:)
       @title = title
       @description = description
     end
+
+    # def validate
+    #   valid?
+    # end
 
     def self.from_hash(hash:)
       CreateTodoInput.new(

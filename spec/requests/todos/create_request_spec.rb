@@ -16,7 +16,7 @@ RSpec.describe Todos::CreateController, type: :request do
         new_todo = Todos::Todo.last
 
         aggregate_failures do
-          expect(response.status).to eq(204)
+          expect(response).to have_http_status(:no_content)
           expect(response.header['Location']).to eq("/todos/#{new_todo.uuid}")
           expect(Todos::Todo.count).to eq(1)
           expect(new_todo.uuid).to match(/[A-Za-z0-9]{8}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{12}/)
@@ -35,9 +35,18 @@ RSpec.describe Todos::CreateController, type: :request do
             }
           }
 
+          expected_response = {
+            errors: {
+              title: ["can't be blank"]
+            }
+          }.to_json
+
           post('/todos', params: params, as: :json)
 
-          expect(response.status).to eq(400)
+          aggregate_failures do
+            expect(response).to have_http_status(:bad_request)
+            expect(response.body).to eq(expected_response)
+          end
         end
       end
     end

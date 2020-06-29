@@ -4,11 +4,12 @@ module Todos
     def create
       create_todo(create_params).fmap do |output|
         respond_to do |format|
-          format.json { render status: :no_content, location: "/todos/#{output.uuid}" }
+          format.json { render(status: :no_content, location: "/todos/#{output.uuid}") }
         end
-      end.or do |error|
+      end.or do |errors|
+        puts 'ERROR'
         respond_to do |format|
-          format.json { render status: :bad_request }
+          format.json { render(status: :bad_request, json: { errors: errors }) }
         end
       end
     end
