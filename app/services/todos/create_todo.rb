@@ -1,7 +1,7 @@
 
 module Todos
   class CreateTodo
-    include ::Dry::Monads[:result]
+    include ::Dry::Monads[:result, :try]
 
     def initialize(repository:, uuid_factory:)
       @repository = repository
@@ -9,17 +9,23 @@ module Todos
     end
 
     def call(input:)
-      validate(input)
-        .or { |errors| validation_failure(errors) }
-        .bind { |validated_input| create_todo(validated_input) }
-    rescue StandardError => e
-      failure_response(e)
+      Try {
+        validate(input)
+          .or { |errors| validation_failure(errors) }
+          .bind { |validated_input| create_todo(validated_input) }
+      }.value_or {|e| failure_response(e)}
     end
 
     private
 
     def validation_failure(errors)
-      Failure(errors)
+      validation_errors = errors.keys.reduce([]) do |errors, key|
+        errors << { field: key, title: error.full_message(key) }
+        errors
+        # { field: :title, code: :blank, title: "can't be blank" }
+      end
+
+      Failure(validation_errors)
     end
 
     def create_todo(input)

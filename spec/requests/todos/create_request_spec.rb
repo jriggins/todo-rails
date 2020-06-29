@@ -36,9 +36,9 @@ RSpec.describe Todos::CreateController, type: :request do
           }
 
           expected_response = {
-            errors: {
-              title: ["can't be blank"]
-            }
+            errors: [
+              { field: :title, code: :blank, title: "can't be blank" }
+            ]
           }.to_json
 
           post('/todos', params: params, as: :json)
