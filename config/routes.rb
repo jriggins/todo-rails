@@ -4,4 +4,6 @@ Rails.application.routes.draw do
   resources :todos, :controller => 'todos/create', only: [:create]
 
   resources :samples, :controller => 'samples/samples', only: [:index]
+
+  get '/maps/:map_id/path/:start_id/:end_id', to: 'find_maps#show'
 end
